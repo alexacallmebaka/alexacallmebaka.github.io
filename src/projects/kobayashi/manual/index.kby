@@ -6,7 +6,7 @@ and written in Haskell, Kobayashi is designed for the
 creation of simple static websites (like this one!) and consists of the `kby` markup format which the 
 `kobayashi` static website builder translates to `html` files for you to display on the World Wide Web!
 
-All the examples used in the manual can be found on [GitHub|https://raw.githubusercontent.com/alexacallmebaka/kobayashi/master/examples].
+All the examples used in the manual can be found on [GitHub|https://github.com/alexacallmebaka/kobayashi/tree/master/examples].
 
 @ Table of Contents 📚
 
