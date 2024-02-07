@@ -1,0 +1,466 @@
+#The Kobayashi User Manual 🐲
+
+Hello, and welcome the user manual for the Kobayashi content managment system! Named after [my favorite two-dimensional programmer|https://en.wikipedia.org/wiki/Miss_Kobayashi%27s_Dragon_Maid],
+Kobayashi is designed for the
+creation of simple static websites (like this one!) and consists of the `kby` markup format which the 
+`kobayashi` static website builder translates to `html` files for you to display on the World Wide Web!
+
+All the examples used in the manual can be found on [GitHub|https://raw.githubusercontent.com/alexacallmebaka/kobayashi/master/examples].
+
+@ Table of Contents 📚
+
+- [Getting Kobayashi|#getting-kobayashi] 
+- [Hello, Kobayashi!|#hello-kobayashi]
+- [The Anatomy of a `kby` File|#the-anatomy-of-a-kby-file]
+- [Block Elements|#block-elements]
+- [In-Line Elements|#inline-elements]
+- [Organizing Your `kby` With Sections|#organizing-your-kby-with-sections]
+- [Styling With `css`|#styling-with-css]
+- [Building a Multi-Page Website|#building-a-multipage-website]
+- [Project Configuration|#project-configuration]
+- [Conclusion|#conclusion]
+
+
+@Getting Kobayashi 🖋️
+
+Currently, GNU\/Linux (pick your favorite flavor) and MacOS are the only offically support operating systems.
+Kobayashi /might/ work on Windows, but it is uncharted territory as of now.
+
+Kobayashi is written in Haskell, and requires version `9.2.8` of the [Glasgow Haskell Compiler|https://www.haskell.org/ghc/]
+and version `3.6.2.0` of [The Haskell Cabal|https://www.haskell.org/cabal/]. Other versions of these libraries
+could work, but your mileage my vary. The reccomened way to install both `ghc` and `cabal` is to use the
+[`GHCup` utility|https://www.haskell.org/ghcup/].
+
+The Kobayashi source code is freely available on [GitHub|https://github.com/alexacallmebaka/kobayashi] and 
+the `master` branch can be cloned for a stable release. After cloning the source code, simply run
+`cabal update` followed by `cabal install` to build and install the `kobayashi` site builder on your system!
+
+After that, it's time to build your website!
+
+@Hello, Kobayashi! 🙋
+
+As previously mentioned, the content of a Kobayashi site is defined using the `kby` markup format. `kby` files
+end in, you probably guessed it, `.kby`. The file extension is case-insensative, but it is important that
+the file extension of each page on your site contains those three letters. *`kobayashi` will ignore any files
+given to it that do not end in `.kby`*.
+
+As a very simple example, let us create the classic "hello, world!" example. In a file called 
+`hello_world.kby` we can put the following.
+
+```
+#Hello, world!
+
+Check out my cool page. 😎
+```
+
+After that, run `kobayashi build hello_world.kby` and watch the magic happen! You'll notice, `kobayashi`
+has a lot to say about our simple little file
+
+```
+$ kobayashi build hello_world.kby
+
+kobayashi.toml not found!
+
+[Current Configuration]
+Build Directory: "build/"
+Assets Directory: "/media/"
+Path to CSS: "/style.css"
+
+Starting build of hello_world.kby
+Building hello_world.kby...
+
+Finished in 0.0013 sec with 0 error(s).
+```
+
+most of this we can ignore for now, but notice two things:
+
+  - `kobyashi` logs to the terminal which files it builds.
+  - The build diretory is `build/`.
+
+`kobayashi` will output the `html` files for your site in a seperate folder called the *build directory*.
+This folder is created if it doesn't exist, and by default is just `build` in the current working
+directory.
+
+Let us explore what `kobayashi` cooked up for us,
+
+```
+$ tree build
+ 
+build/
+└── hello_world
+    └── index.html
+
+2 directories, 1 file
+```
+
+you'll see that a folder with the name of the orginal `kby` file was made, and inside sits a file called
+`index.html` which contains the `html` that was generated. Kobayashi organizes things this way so you can
+link a specific page on your site by using just the filenames and not having the fumble around with
+remembering extensions. For example, we could link to our "hello, world!" page with `https://mysite/hello_world`.
+
+Finally, let's look at the contents of `index.html`
+
+```
+$ cat build/hello_world/index.html
+
+<!DOCTYPE HTML>
+<!--Made with ❤️ using Kobayashi: https://github.com/alexacallmebaka/kobayashi-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="/style.css" />
+<title>Hello, world!</title>
+</head>
+<html>
+<body>
+<article id="hello-world">
+<h1>Hello, world!</h1>
+<p>
+Check out my cool page. 😎
+</p>
+</article>
+</body>
+</html>
+```
+
+As you can see, `kobayashi` automaticallly sets some helpful metadata for us, as well as links in a 
+stylesheet (more on this later). This also demonstrates what the `#` does in `kby` markup -- it sets
+the title of the page as well as the main heading! With this simple example under our belt, let's
+dive a but deeper into the `kby` spec.
+
+@The Anatomy of a `kby` File 🧬
+In its most basic form, a `kby` file consists of a *title* followed by a list of *block elements*. The title
+is a series of *in-line elements* prefixed by a `#` and ended by a newline. 
+For example `#Hello, world!` was the title of our page in
+the previous example. In `html`, the title of a page is used three ways:
+
+- Wrapped in `<h1>` tags at the top of the page.
+- The literal text of the title (with no extra styling) is used in the `<title>` element of the `html` page.
+- An alphanumeric version of the title (with spaces replaced by hyphens) is used as the id of the `article` tag that wraps the main content of the document.
+
+Woah, woah, woah! What about block and in-line elements? Well, *block elements* are elements one would tradionally expect to use the 
+`block` display mode in `html`. The block elements in `kby` are:
+
+- Paragraphs
+- Bulleted lists
+- Code listings
+- Block quotes
+- Images
+- Element groups
+
+*Each of these is ended by two newlines.*
+We will explore these more in [their own section|#block-elements]. As for in-line elements, our star-studded cast is as follows
+
+- Bold text
+- Italic text
+- Verbatim text
+- Links
+
+These also will have thier [own section|#inline-elements] coming up soon.
+
+@ Block Elements 🧱
+The first and most basic of the block elements is the *paragraph*. The paragraph is simply defined as a sequence of in-line
+elements and plain text ended by two newlines. Making a paragraph is easy, just type out the words! The body of our page
+in [the "hello, world!" example|#hello-kobayashi] was a paragraph in action. In `html`, we simply wrapped the content of
+a paragraph in `<p>` tags.
+
+Next up, we have *bulleted lists*! An example of a bulleted list is
+
+```
+some music genres I like:
+
+- j-pop
+- k-pop
+- midwest emo
+- shoegaze
+- bitpop
+```
+
+Above, we see a paragraph followed by a bulleted list. Each item in the list is prefixed by a `-` and can contain any
+sequence of plain text and in-line elements.  In the `html`, we use the classic `<ul>` for the whole list and `<li>` for each item.
+A given item is ended by a newline, and the entire list is ended by two newlines
+(one to end the final item, and another to end the list).
+
+At this point it is worth noting that *every block element is ended by two newlines, unless it is at the end of the file.* If it is the
+last block element in the file, then no newlines are required (unless your editor does not automaically end files with newlines, than
+one newline may be required for something like a list).
+
+
+Next up, *code listings*! Let's see an example.
+
+```
+\`\`\`
+def function():
+  print("turing could never.")
+\`\`\`
+```
+
+Code listings are simply blocks that display whatever text is inside them verbatim (with a small excpetion). You begin a code listing using
+`\`\`\`` followed by a newline, and then end it with the same three backticks followed by two newlines. Everything in-between will be translated
+verbatim into `html` and wrapped in `<pre>` and `<code>` tags (in that order). Well, almost verbatim. One special case to watch out for
+is if you use three or more `\`` in a row in your listing. Since this contains the marker that ends a verbatim block, these characters need to
+be *escaped*. We will see escaping much more in the section on in-line elements, but it essentially tells `kobayashi` to interpert a character
+literally, stripping away any special semantic meaning it use to hold. To escape a backtick, prefix it with a `\\`. So, if you wanted to
+type `\`\`\`` you's need to put `\\\`\\\`\\\`` in your code listing. Also, if you want to include the escape character itself, you will
+need to escape that too. So to type a `\\` you will need to use `\\\\`.
+
+Onwards now, to *block quotes*. As always, an example first.
+
+```
+> If I had more time, I would have written a shorter letter. ~Mark Twain
+```
+
+Block quotes are best used when you are looking to quote somebody or a text directly. It begins with a `>`, some number of
+in-line elements, a `~` and then the author of whatever you are quoting as a series of in-line elements ended by, or course, two newlines. 
+When translated to `html`, the whole thing is a `<div>` tag
+with the class `blockquote`. Inside this the quote itself is wrapped in `<span>` tags with the class `quote` and the author is
+similarly wrapped in `<span>` tags with the class `author`.
+
+The last two elements we will cover are somewhat different from the rest. The first are *images*. An image in `kby` markup is
+a link enclosed in angle brackets ended by two newlines. The link can take two forms, it can either link to an *asset* or a *remote image*.
+
+First, let's look at linking to an asset.
+
+```
+<$/path/to/my/image.jpeg>
+```
+
+The link inside the angle brackets is prefixed by a `$/` which is a reference to your project's *assets directory*. Essentially, this is
+a folder located somewhere relative to the root of your site that contains all non-kby files relavent to your site (it can also contain
+`kby` files, but `kobayashi` will ignore them). By default, this directory
+is called `media` and located at the root of your site. As we will see later, this directory is user-configurable. After placing the `$/`,
+you can type the path as you would on any unix-y system. 
+ 
+The other option is to link to something remotely. Here is an example.
+
+```
+<https://jameshurd.net/media/casitas_1.jpeg>
+```
+
+In the `html`, `kobayashi` uses `<img>` tags for images, and in the case of remote links whatever you type will be used verbatim
+as the `href` attribute.
+
+Last, but certainly not least, we have *element groups*. Among the block elements, these are the biggest outliers and thier utlity may not
+be apparant initially. Element groups allow you to group various other block elements and wrap them in `<div>` tags in the resuting
+`html`. An example is as follows.
+
+```
+{my_group}
+
+all of this fun stuff belongs together!
+
+- here is
+- a list of fun stuff
+
+a fun bash program:
+
+\`\`\`
+:(){ :|:& };:
+\`\`\`
+
+{my_group}
+```
+
+Please do not run the code in the pervious example, it may or may not crash your computer... Anyways! Above we grouped together a code listing,
+a list, and a couple of paragraphs. For groups, you start them by wrapping the name of your group in curly braces. You then do the same thing
+when you are ready to end your group. This will wrap all the `html` for the elements in your group in `<div>` tags with a class name
+that mirrors the group name. Group names can consist of any combination of alphanumeric characters, `_`, and `-`.
+
+In the above example, our group's name is `my_group`, so all of those elements will be contained in the element `<div class="my_group">`.
+
+Groups can get very messy very fast. Infact, if you want to melt your brain, you can arbitraily nest groups inside of each other! Just
+make sure to properly sequence your starting and ending markers...
+
+Another weird point about groups they are the only block elements that do not need to be ended by a double newline, just a single one will
+do (or the end of the file).
+
+@ In-Line Elements 🚢
+Another fundamental building block of `kby` markup is the in-line element! These elements, as you probably guessed, occur on the same
+line within [block elements|#block-elements]. Mainly, they are used for different styles of text. Specifically,
+
+- /bold text/ is wrapped in `*` and translates to the `<strong>` tag in `html`.
+- /italic text/ is wrapped in `/` and translates to the `<em>` tag in `html`.
+- /verbatim text/ is wrapped in `\`` and translates to the `<code>` tag in `html`.
+
+It is worth mentioning that bold and italic text can also be nested within each other. Verbatim can also sit within bold and itaic text,
+but not the other way around (i.e. `*\`bold verb\`*` => *`bold verb`* but `\`*bold verb*\`` => `*bold verb*`).
+
+Another important thing to note is the notion of *escape characters*. Since the `*`, `/`, and `\`` characters hold special styling information,
+if you want to display them as part of a sequence of in-line elements.
+(e.g. in a paragraph)  you will need to prefix them with a `\\` to strip that information away and display them literally.
+Since the `\\` also serves a special purpose (stripping away that info), you also need to escape it to type it literally (i.e. `\\\\` => \\).
+
+Since verbatim text does not contain any in-line elements, you need not escape the usual styling characters from its contents.
+However, you will need to escape `\`` and `\\`.
+
+The last in-line element is one that is fundamental to any website — the *hyperlink*. Syntacically, links take the following form.
+
+```
+[title|href]
+```
+
+In `html`, links get implemented with `<a>` tags.
+The `title` portion of the link can be any valid sequence of in-line elements, and is the text that is clickable on the page (i.e. what is
+wrapped in the `<a>` tag in `html`). The `href` portion is what the link points to, and is used to fill the `href` attribute in the `<a>` tag.
+`href`s come in three main flavors:
+
+- Links to pages
+- Links to assets
+- Links to remote resources
+
+Firstly, if the link begins with `/`, `.`, `..`, or `#` `kobayashi` will iterperate as a link to a page on your site, and give the 
+`<a>` tag the class `local-page` All four of these markers carry the same meaning they do in `html`, mainly:
+
+- `/` refers to the root of your site.
+- `.` refers to the current directory.
+- `..` refers to one directory back.
+- `#` refers to the `id` attribute of a specific element (more on this when we get to [sections|#organizing-your-kby-with-sections]).
+
+Next, as with images, links that start with `$/` refer to your site's assets directory (where relevent non-`kby` files are stored).
+By default, this is a folder called `media` at the root of your site. These links have the class `local-asset`.
+
+Finally, links that start with anything else are interperated as links to remote resources, and have the class `remote`.
+
+@ Organizing Your `kby` With Sections 🗄️
+At this point, we have a sll the building blocks to start creating a cozy little blog! However, it would be nice if we could
+give our pages a bit more structure... that is where *sections* come in!
+
+Sections are a construct that allow us to group sequences of block elements into named, /linkable/ groups.
+They begin on thier own line with a `@` and then contain a sequence of in-line elements ended by a new line.
+Let's see an example.
+
+```
+#My cooler site 🔥
+
+Hello! Welcome to my slick blog.
+
+@Awesome Section
+Wow, look at how organized I am!
+
+@Awesomer Section
+This really does spark joy.
+```
+
+[Marie Kondo|https://konmari.com/about-marie-kondo/] would be so proud of us right now. If we look at the `html` generated by this example
+(sans the `<head>` boilerplate) we can see what sections are doing.
+
+```
+<html>
+<body>
+<article id="my-cooler-site">
+<h1>My cooler site 🔥</h1>
+<p>
+Hello! Welcome to my slick blog.
+</p>
+<section id="awesome-section">
+<h2>Awesome Section</h2>
+<p>
+Wow, look at how organized I am!
+</p>
+</section>
+<section id="awesomer-section">
+<h2>Awesomer Section</h2>
+<p>
+This really does spark joy.
+</p>
+</section>
+</article>
+</body>
+</html>
+```
+
+Several things to note here. Firstly, we can see that each section wraps its contents in `<section>` tags, that have an `id` attribute
+consisting of the alphanumeric text of the title minus any styling information, with spaces replaced by `-`. The `id` will alao
+be all lowercase and strip any leading or trailing whitespace. *If you want to create a link to a specific section of a page, you
+can use this `id`*!
+
+You can also see that each section begins with an `<h2>` tag that contains the text of the section title.
+
+The last important thing to notice is where the sections begin and end. Before the first declaration of a section,
+the elements are not in any `<section>` tags. This area is called the *anonymous section* and is where everything sits by default.
+A page need not have any sections, but once the first section is declared, everything that follows is a part of that section until
+a new section is declared. In other words, *sections are ended by other sections*. It is also worth mentioning that *once you leave
+the anonymous section, there is no way to go back*.
+
+@ Styling With `css` 🎨 
+At this point, we are now able write our site using the glorious `kby` markup, and have `kobayashi` spit out a bunch of `html` files for
+us to display to the world. There is only one problem... we currently have no way to change how our website is displayed, we are stuck
+with the default styling. Lucky for us, `kobayashi` gives us the option to specify our own custom `css` stylesheet!
+
+For the uninitiated, `css` is a language used to style `html` elements. Teaching `css` is out of the scope of this manual,
+but a great place to get started with `css` is to read
+[Mozilla's tutorials|https://developer.mozilla.org/en-US/docs/Web/CSS/Tutorials].
+
+By default, `kobayashi` looks for a file called `style.css` at the root of our site. As we will see later in the section on
+[project configuration|#project-configuration-with-toml], this can be changed to wherever your heart desires.
+
+For the `html` that corresponds to each `kby` element, see the previous sections on [block elements|#block-elements],
+[in-line elements|#inline-elements] and [sections|#organizing-your-kby-with-sections].
+
+@ Building a Multi-Page Website 📑
+So far, we have only seen examples of using `kobayashi` to build a single `kby` file. However, `kobayashi` can build a whole folder
+of `kby` files in one go! The secret to this is to simply pass the name of the directory that contains all of the files instead of the
+path to a specific file.
+
+As we saw earlier, `kobayashi` will create a folder called `build` in whatever directory you invoke it from. `kobayashi` will then
+replicate the directory structure of the source folder in build, replacing files with their `html` counterparts as we saw in
+the ["hello, world!" example|#hello-kobayashi] with one notable exception. Normally, a file called `myFile.kby` corresponds to
+`myFile/index.html`, but if the filename is `index.kby` it will be translated to `index.html` in its directory with no extra folder.
+This is behavior is a must for navigation or home pages.
+
+@ Project Configuration 🪛 
+So, we have all the ingredients to build our website with Kobayashi, but what if we don't like the default options?
+Well, Kobyashi lets you customize several things about your project! The first one being the *build directory*.
+By default, the `html` files for your site are placed in a folder called `build`, however you can specify what ever output folder
+you like by passing the `-odir` option to `kobayashi` followed by the *relative path* to your output folder. *This path must be
+relative, otherwise `kobayashi` will ignore it and use the next choice for the build directory*. If the folder does not exist,
+`kobayashi` will create it for you (including any missing parent directories)!
+
+In `kobayashi`, options are placed before the command (`build` in most cases). To see an example, let's say we wanted to 
+the ["hello, world!" example|#hello-world] to be built in the folder `tmp/hello_world`. We would pass this as
+
+```
+$ kobayashi -odir tmp/hello_world build hello_world.kby
+```
+
+*If you every forget an option, simply run `kobayashi help` and the builder will gladly remind you of everything it can do.*
+
+Kobayashi will also let you specify custom paths for the *assets directory* and *stylesheet*. Instead of being passed via the command line,
+this are set in a configuration file using [`toml`|https://toml.io/en/], specifically version 0.5.0 of the specification. If you are
+unfamiliar withe `toml`, check out the [offical documentation|https://toml.io/en/v0.5.0].
+
+By default, `kobayashi` will look for a file called `kobayashi.toml` in the current working directory. You can also specify the path to a 
+different file using the `-cfg` option. A typical configuration file looks like this
+
+```
+[project]
+build_dir = "build"
+assets_dir = "/media"
+css_path = "/style.css"
+```
+
+As you can see, you can also specify the build directory here.
+The main table must be called *project*, and the keys are pretty self-explanitory. As usual, a couple things to note here.
+
+- `build_dir` *must* be a relative path.
+- `assets_dir` and `css_path` *must* be absolute paths.
+
+That second one is a bit of a lie. They must be absolute paths where `/` represents the build directory of your site.
+As an example, if I want my site's assets directory to be `build/stuff` I would set `assets_dir` to `/stuff`.
+
+*If either of these criteria is not met, `kobayashi` will ignore that key in the `toml` file and use the default.* Each time it runs,
+`kobayashi` will begin by displaying the current configuration information so you can verify everything is correct.
+
+The last thing to talk about in terms of configuration is *precedence*. `koabayashi` will first use any of the options passed to it
+via the command line, then check the configuration file, and lastly fill in with defaults.
+
+@Conclusion 🎉
+With that, we have reached the end of our journey together. You are now ready to conquer the internet using the Kobayashi content management
+system!
+
+If you are looking for a more elaborate example of using Kobayashi to build something, look no further than [my blog|https://github.com/alexacallmebaka/alexacallmebaka.github.io].
+
+Found a bug? Please report it by [opening a GitHub issue|https://github.com/alexacallmebaka/kobayashi/issues].
+
+Happy building! 🍻
+
