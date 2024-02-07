@@ -1,0 +1,136 @@
+/* color palatte
+blue: hsl(236, 92%, 29%)
+navy: hsl(217, 61%, 10%)
+light blue: hsla(185, 82%, 71%)
+green: hsl(61, 86%, 62%)
+pink: hsl(318, 91%, 72%)
+*/
+
+html {
+  scroll-behavior: smooth;
+  background-color: hsl(217, 61%, 10%); 
+  font-family: Verdana, sans-serif;
+  color: hsl(0, 0%, 100%);
+  max-width: 700px;
+  margin: auto;
+}
+
+
+h1, h2 {
+  text-align: center;
+  color: hsl(61, 86%, 62%);
+}
+
+h1 {
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-color: hsl(186, 82%, 71%);
+  text-decoration-thickness: 0.3rem;
+}
+
+strong {
+  color: hsl(186, 82%, 71%);
+}
+
+a:link {
+  color: hsl(318, 91%, 72%);
+}
+
+a:visited {
+  color: hsl(318, 91%, 62%);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a.remote::after {
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  content: "↗️";
+  margin-left: 0.1rem;
+}
+
+/*https://www.w3schools.com/howto/howto_css_bullet_color.asp*/
+ul {
+  list-style: none;
+}
+
+ul li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: hsl(186, 82%, 71%); /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1rem; /* Also needed for space (tweak if needed) */
+  margin-left: -1rem; /* Also needed for space (tweak if needed) */
+}
+
+
+img {
+  display: block;
+  margin: auto;
+  max-width: 90%;
+  border-style: solid;
+  border-width: 10px;
+  border-color: hsl(0, 0%, 75%);
+}
+
+code {
+  overflow-wrap: break-word;
+  padding: 0.3em;
+  background: hsl(0, 0%, 0%); 
+  border-radius: 5px;
+}
+
+pre code {
+  display: block;
+  width: 90%;
+  margin: auto;
+  white-space: pre-wrap;
+  padding: 1em;
+  background: hsl(0, 0%, 0%); 
+  border-style: solid;
+  border-width: 5px;
+  border-color: hsl(0, 0%, 100%);
+  border-radius: 25px;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  flex: 1 auto; 
+}
+
+.quote-wall {
+  align-self: center;
+}
+
+.blockquote {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem;
+  max-width: 35rem;
+}
+
+.quote {
+  align-self: flex-start;
+  display: block;
+}
+
+.author {
+  align-self: flex-end;
+  display: block;
+  color: hsl(186, 82%, 71%);
+  /*align-self: flex-end;*/
+}
+
+.quote::before {
+  content: "\201C";
+}
+
+.quote::after {
+  content: "\201D";
+}
+
+.author::before {
+  content: "~";
+}

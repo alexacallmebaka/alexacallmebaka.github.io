@@ -1,0 +1,680 @@
+<!DOCTYPE HTML>
+<!--Made with ❤️ using Kobayashi: https://github.com/alexacallmebaka/kobayashi-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="/style.css" />
+<title>The Kobayashi User Manual 🐲</title>
+</head>
+<html>
+<body>
+<article id="the-kobayashi-user-manual">
+<h1>The Kobayashi User Manual 🐲</h1>
+<p>
+Hello, and welcome the user manual for the Kobayashi content management system! Named 
+after <a class="remote" target="_blank"  href="https://en.wikipedia.org/wiki/Miss_Kobayashi%27s_Dragon_Maid">my favorite two-dimensional programmer</a>
+and written in Haskell, Kobayashi is designed for the
+creation of simple static websites (like this one!) and consists of the <code>kby</code> markup format which the 
+<code>kobayashi</code> static website builder translates to <code>html</code> files for you to display on the World Wide Web!
+</p>
+<p>
+All the examples used in the manual can be found on <a class="remote" target="_blank"  href="https://raw.githubusercontent.com/alexacallmebaka/kobayashi/master/examples">GitHub</a>.
+</p>
+<section id="table-of-contents">
+<h2> Table of Contents 📚</h2>
+<ul>
+<li>
+<a class="local-page" href="#getting-kobayashi">Getting Kobayashi</a> 
+</li>
+<li>
+<a class="local-page" href="#hello-kobayashi">Hello, Kobayashi!</a>
+</li>
+<li>
+<a class="local-page" href="#the-anatomy-of-a-kby-file">The Anatomy of a <code>kby</code> File</a>
+</li>
+<li>
+<a class="local-page" href="#block-elements">Block Elements</a>
+</li>
+<li>
+<a class="local-page" href="#inline-elements">In-Line Elements</a>
+</li>
+<li>
+<a class="local-page" href="#organizing-your-kby-with-sections">Organizing Your <code>kby</code> With Sections</a>
+</li>
+<li>
+<a class="local-page" href="#styling-with-css">Styling With <code>css</code></a>
+</li>
+<li>
+<a class="local-page" href="#building-a-multipage-website">Building a Multi-Page Website</a>
+</li>
+<li>
+<a class="local-page" href="#project-configuration">Project Configuration</a>
+</li>
+<li>
+<a class="local-page" href="#conclusion">Conclusion</a>
+</li>
+</ul>
+</section>
+<section id="getting-kobayashi">
+<h2>Getting Kobayashi 🖋️</h2>
+<p>
+Currently, GNU/Linux (pick your favorite flavor) and MacOS are the only officially support operating systems.
+Kobayashi <em>might</em> work on Windows, but it is uncharted territory as of now.
+</p>
+<p>
+Kobayashi is written in Haskell, and requires version <code>9.2.8</code> of the <a class="remote" target="_blank"  href="https://www.haskell.org/ghc/">Glasgow Haskell Compiler</a>
+and version <code>3.6.2.0</code> of <a class="remote" target="_blank"  href="https://www.haskell.org/cabal/">The Haskell Cabal</a>. Other versions of these libraries
+could work, but your mileage my vary. The recommend way to install both <code>ghc</code> and <code>cabal</code> is to use the
+<a class="remote" target="_blank"  href="https://www.haskell.org/ghcup/"><code>GHCup</code> utility</a>.
+</p>
+<p>
+The Kobayashi source code is freely available on <a class="remote" target="_blank"  href="https://github.com/alexacallmebaka/kobayashi">GitHub</a> and 
+the <code>master</code> branch can be cloned for a stable release. After cloning the source code, simply run
+<code>cabal update</code> followed by <code>cabal install</code> to build and install the <code>kobayashi</code> site builder on your system!
+</p>
+<p>
+After that, it&apos;s time to build your website!
+</p>
+</section>
+<section id="hello-kobayashi">
+<h2>Hello, Kobayashi! 🙋</h2>
+<p>
+As previously mentioned, the content of a Kobayashi site is defined using the <code>kby</code> markup format. <code>kby</code> files
+end in, you probably guessed it, <code>.kby</code>. The file extension is case-insensitive, but it is important that
+the file extension of each page on your site contains those three letters. <strong><code>kobayashi</code> will ignore any files
+given to it that do not end in <code>.kby</code></strong>.
+</p>
+<p>
+As a very simple example, let us create the classic &quot;hello, world!&quot; example. In a file called 
+<code>hello_world.kby</code> we can put the following.
+</p>
+<pre>
+<code>
+#Hello, world!
+
+Check out my cool page. 😎
+
+</code>
+</pre>
+<p>
+After that, run <code>kobayashi build hello_world.kby</code> and watch the magic happen! You&apos;ll notice, <code>kobayashi</code>
+has a lot to say about our simple little file
+</p>
+<pre>
+<code>
+$ kobayashi build hello_world.kby
+
+kobayashi.toml not found!
+
+[Current Configuration]
+Build Directory: &quot;build/&quot;
+Assets Directory: &quot;/media/&quot;
+Path to CSS: &quot;/style.css&quot;
+
+Starting build of hello_world.kby
+Building hello_world.kby...
+
+Finished in 0.0013 sec with 0 error(s).
+
+</code>
+</pre>
+<p>
+most of this we can ignore for now, but notice two things:
+</p>
+<ul>
+<li>
+<code>kobyashi</code> logs to the terminal which files it builds.
+</li>
+<li>
+The build directory is <code>build/</code>.
+</li>
+</ul>
+<p>
+<code>kobayashi</code> will output the <code>html</code> files for your site in a separate folder called the <strong>build directory</strong>.
+This folder is created if it doesn&apos;t exist, and by default is just <code>build</code> in the current working
+directory.
+</p>
+<p>
+Let us explore what <code>kobayashi</code> cooked up for us,
+</p>
+<pre>
+<code>
+$ tree build
+ 
+build/
+└── hello_world
+    └── index.html
+
+2 directories, 1 file
+
+</code>
+</pre>
+<p>
+you&apos;ll see that a folder with the name of the original <code>kby</code> file was made, and inside sits a file called
+<code>index.html</code> which contains the <code>html</code> that was generated. Kobayashi organizes things this way so you can
+link a specific page on your site by using just the filenames and not having the fumble around with
+remembering extensions. For example, we could link to our &quot;hello, world!&quot; page with <code>https://mysite/hello_world</code>.
+</p>
+<p>
+Finally, let&apos;s look at the contents of <code>index.html</code>
+</p>
+<pre>
+<code>
+$ cat build/hello_world/index.html
+
+&lt;!DOCTYPE HTML&gt;
+&lt;!--Made with ❤️ using Kobayashi: https://github.com/alexacallmebaka/kobayashi--&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot; /&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;/style.css&quot; /&gt;
+&lt;title&gt;Hello, world!&lt;/title&gt;
+&lt;/head&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;article id=&quot;hello-world&quot;&gt;
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+&lt;p&gt;
+Check out my cool page. 😎
+&lt;/p&gt;
+&lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code>
+</pre>
+<p>
+As you can see, <code>kobayashi</code> automatically sets some helpful metadata for us, as well as links in a 
+stylesheet (more on this later). This also demonstrates what the <code>#</code> does in <code>kby</code> markup -- it sets
+the title of the page as well as the main heading! With this simple example under our belt, let&apos;s
+dive a but deeper into the <code>kby</code> spec.
+</p>
+</section>
+<section id="the-anatomy-of-a-kby-file">
+<h2>The Anatomy of a <code>kby</code> File 🧬</h2>
+<p>
+In its most basic form, a <code>kby</code> file consists of a <strong>title</strong> followed by a list of <strong>block elements</strong>. The title
+is a series of <strong>in-line elements</strong> prefixed by a <code>#</code> and ended by a newline. 
+For example <code>#Hello, world!</code> was the title of our page in
+the previous example. In <code>html</code>, the title of a page is used three ways:
+</p>
+<ul>
+<li>
+Wrapped in <code>&lt;h1&gt;</code> tags at the top of the page.
+</li>
+<li>
+The literal text of the title (with no extra styling) is used in the <code>&lt;title&gt;</code> element of the <code>html</code> page.
+</li>
+<li>
+An alphanumeric version of the title (with spaces replaced by hyphens) is used as the id of the <code>article</code> tag that wraps the main content of the document.
+</li>
+</ul>
+<p>
+Whoa, whoa, whoa! What about block and in-line elements? Well, <strong>block elements</strong> are elements one would traditionally expect to use the 
+<code>block</code> display mode in <code>html</code>. The block elements in <code>kby</code> are:
+</p>
+<ul>
+<li>
+Paragraphs
+</li>
+<li>
+Bulleted lists
+</li>
+<li>
+Code listings
+</li>
+<li>
+Block quotes
+</li>
+<li>
+Images
+</li>
+<li>
+Element groups
+</li>
+</ul>
+<p>
+<strong>Each of these is ended by two newlines.</strong>
+We will explore these more in <a class="local-page" href="#block-elements">their own section</a>. As for in-line elements, our star-studded cast is as follows
+</p>
+<ul>
+<li>
+Bold text
+</li>
+<li>
+Italic text
+</li>
+<li>
+Verbatim text
+</li>
+<li>
+Links
+</li>
+</ul>
+<p>
+These also will have their <a class="local-page" href="#inline-elements">own section</a> coming up soon.
+</p>
+</section>
+<section id="block-elements">
+<h2> Block Elements 🧱</h2>
+<p>
+The first and most basic of the block elements is the <strong>paragraph</strong>. The paragraph is simply defined as a sequence of in-line
+elements and plain text ended by two newlines. Making a paragraph is easy, just type out the words! The body of our page
+in <a class="local-page" href="#hello-kobayashi">the &quot;hello, world!&quot; example</a> was a paragraph in action. In <code>html</code>, we simply wrapped the content of
+a paragraph in <code>&lt;p&gt;</code> tags.
+</p>
+<p>
+Next up, we have <strong>bulleted lists</strong>! An example of a bulleted list is
+</p>
+<pre>
+<code>
+some music genres I like:
+
+- j-pop
+- midwest emo
+- shoegaze
+- k-pop
+- bitpop
+
+</code>
+</pre>
+<p>
+Above, we see a paragraph followed by a bulleted list. Each item in the list is prefixed by a <code>-</code> and can contain any
+sequence of plain text and in-line elements.  In the <code>html</code>, we use the classic <code>&lt;ul&gt;</code> for the whole list and <code>&lt;li&gt;</code> for each item.
+A given item is ended by a newline, and the entire list is ended by two newlines
+(one to end the final item, and another to end the list).
+</p>
+<p>
+At this point it is worth noting that <strong>every block element is ended by two newlines, unless it is at the end of the file.</strong> If it is the
+last block element in the file, then no newlines are required (unless your editor does not automatically end files with newlines, than
+one newline may be required for something like a list).
+</p>
+<p>
+Next up, <strong>code listings</strong>! Let&apos;s see an example.
+</p>
+<pre>
+<code>
+```
+def function():
+  print(&quot;turing could never.&quot;)
+```
+
+</code>
+</pre>
+<p>
+Code listings are simply blocks that display whatever text is inside them verbatim (with a small exception). You begin a code listing using
+<code>```</code> followed by a newline, and then end it with the same three backticks followed by two newlines. Everything in-between will be translated
+verbatim into <code>html</code> and wrapped in <code>&lt;pre&gt;</code> and <code>&lt;code&gt;</code> tags (in that order). Well, almost verbatim. One special case to watch out for
+is if you use three or more <code>`</code> in a row in your listing. Since this contains the marker that ends a verbatim block, these characters need to
+be <strong>escaped</strong>. We will see escaping much more in the section on in-line elements, but it essentially tells <code>kobayashi</code> to interpret a character
+literally, stripping away any special semantic meaning it use to hold. To escape a backtick, prefix it with a <code>\</code>. So, if you wanted to
+type <code>```</code> you&apos;s need to put <code>\`\`\`</code> in your code listing. Also, if you want to include the escape character itself, you will
+need to escape that too. So to type a <code>\</code> you will need to use <code>\\</code>.
+</p>
+<p>
+Onwards now, to <strong>block quotes</strong>. As always, an example first.
+</p>
+<pre>
+<code>
+&gt; If I had more time, I would have written a shorter letter. ~Mark Twain
+
+</code>
+</pre>
+<p>
+Block quotes are best used when you are looking to quote somebody or a text directly. It begins with a <code>&gt;</code>, some number of
+in-line elements, a <code>~</code> and then the author of whatever you are quoting as a series of in-line elements ended by, or course, two newlines. 
+When translated to <code>html</code>, the whole thing is a <code>&lt;div&gt;</code> tag
+with the class <code>blockquote</code>. Inside this the quote itself is wrapped in <code>&lt;span&gt;</code> tags with the class <code>quote</code> and the author is
+similarly wrapped in <code>&lt;span&gt;</code> tags with the class <code>author</code>.
+</p>
+<p>
+The last two elements we will cover are somewhat different from the rest. The first are <strong>images</strong>. An image in <code>kby</code> markup is
+a link enclosed in angle brackets ended by two newlines. The link can take two forms, it can either link to an <strong>asset</strong> or a <strong>remote image</strong>.
+</p>
+<p>
+First, let&apos;s look at linking to an asset.
+</p>
+<pre>
+<code>
+&lt;$/path/to/my/image.jpeg&gt;
+
+</code>
+</pre>
+<p>
+The link inside the angle brackets is prefixed by a <code>$/</code> which is a reference to your project&apos;s <strong>assets directory</strong>. Essentially, this is
+a folder located somewhere relative to the root of your site that contains all non-kby files relevant to your site (it can also contain
+<code>kby</code> files, but <code>kobayashi</code> will ignore them). By default, this directory
+is called <code>media</code> and located at the root of your site. As we will see later, this directory is user-configurable. After placing the <code>$/</code>,
+you can type the path as you would on any unix-y system. 
+ 
+The other option is to link to something remotely. Here is an example.
+</p>
+<pre>
+<code>
+&lt;https://jameshurd.net/media/casitas_1.jpeg&gt;
+
+</code>
+</pre>
+<p>
+In the <code>html</code>, <code>kobayashi</code> uses <code>&lt;img&gt;</code> tags for images, and in the case of remote links whatever you type will be used verbatim
+as the <code>href</code> attribute.
+</p>
+<p>
+Last, but certainly not least, we have <strong>element groups</strong>. Among the block elements, these are the biggest outliers and their utility may not
+be apparent initially. Element groups allow you to group various other block elements and wrap them in <code>&lt;div&gt;</code> tags in the resulting
+<code>html</code>. An example is as follows.
+</p>
+<pre>
+<code>
+{my_group}
+
+all of this fun stuff belongs together!
+
+- here is
+- a list of fun stuff
+
+a fun bash program:
+
+```
+:(){ :|:&amp; };:
+```
+
+{my_group}
+
+</code>
+</pre>
+<p>
+Please do not run the code in the previous example, it may or may not crash your computer... Anyways! Above we grouped together a code listing,
+a list, and a couple of paragraphs. For groups, you start them by wrapping the name of your group in curly braces. You then do the same thing
+when you are ready to end your group. This will wrap all the <code>html</code> for the elements in your group in <code>&lt;div&gt;</code> tags with a class name
+that mirrors the group name. Group names can consist of any combination of alphanumeric characters, <code>_</code>, and <code>-</code>.
+</p>
+<p>
+In the above example, our group&apos;s name is <code>my_group</code>, so all of those elements will be contained in the element <code>&lt;div class=&quot;my_group&quot;&gt;</code>.
+</p>
+<p>
+Groups can get very messy very fast. In fact, if you want to melt your brain, you can arbitrarily nest groups inside of each other! Just
+make sure to properly sequence your starting and ending markers...
+</p>
+<p>
+Another weird point about groups they are the only block elements that do not need to be ended by a double newline, just a single one will
+do (or the end of the file).
+</p>
+</section>
+<section id="inline-elements">
+<h2> In-Line Elements 🚢</h2>
+<p>
+Another fundamental building block of <code>kby</code> markup is the in-line element! These elements, as you probably guessed, occur on the same
+line within <a class="local-page" href="#block-elements">block elements</a>. Mainly, they are used for different styles of text. Specifically,
+</p>
+<ul>
+<li>
+<em>bold text</em> is wrapped in <code>*</code> and translates to the <code>&lt;strong&gt;</code> tag in <code>html</code>.
+</li>
+<li>
+<em>italic text</em> is wrapped in <code>/</code> and translates to the <code>&lt;em&gt;</code> tag in <code>html</code>.
+</li>
+<li>
+<em>verbatim text</em> is wrapped in <code>`</code> and translates to the <code>&lt;code&gt;</code> tag in <code>html</code>.
+</li>
+</ul>
+<p>
+It is worth mentioning that bold and italic text can also be nested within each other. Verbatim can also sit within bold and italic text,
+but not the other way around (i.e. <code>*`bold verb`*</code> =&gt; <strong><code>bold verb</code></strong> but <code>`*bold verb*`</code> =&gt; <code>*bold verb*</code>).
+</p>
+<p>
+Another important thing to note is the notion of <strong>escape characters</strong>. Since the <code>*</code>, <code>/</code>, and <code>`</code> characters hold special styling information,
+if you want to display them as part of a sequence of in-line elements.
+(e.g. in a paragraph)  you will need to prefix them with a <code>\</code> to strip that information away and display them literally.
+Since the <code>\</code> also serves a special purpose (stripping away that info), you also need to escape it to type it literally (i.e. <code>\\</code> =&gt; \).
+</p>
+<p>
+Since verbatim text does not contain any in-line elements, you need not escape the usual styling characters from its contents.
+However, you will need to escape <code>`</code> and <code>\</code>.
+</p>
+<p>
+The last in-line element is one that is fundamental to any website — the <strong>hyperlink</strong>. Syntactically, links take the following form.
+</p>
+<pre>
+<code>
+[title|href]
+
+</code>
+</pre>
+<p>
+In <code>html</code>, links get implemented with <code>&lt;a&gt;</code> tags.
+The <code>title</code> portion of the link can be any valid sequence of in-line elements, and is the text that is clickable on the page (i.e. what is
+wrapped in the <code>&lt;a&gt;</code> tag in <code>html</code>). The <code>href</code> portion is what the link points to, and is used to fill the <code>href</code> attribute in the <code>&lt;a&gt;</code> tag.
+<code>href</code>s come in three main flavors:
+</p>
+<ul>
+<li>
+Links to pages
+</li>
+<li>
+Links to assets
+</li>
+<li>
+Links to remote resources
+</li>
+</ul>
+<p>
+Firstly, if the link begins with <code>/</code>, <code>.</code>, <code>..</code>, or <code>#</code> <code>kobayashi</code> will interpret as a link to a page on your site, and give the 
+<code>&lt;a&gt;</code> tag the class <code>local-page</code> All four of these markers carry the same meaning they do in <code>html</code>, mainly:
+</p>
+<ul>
+<li>
+<code>/</code> refers to the root of your site.
+</li>
+<li>
+<code>.</code> refers to the current directory.
+</li>
+<li>
+<code>..</code> refers to one directory back.
+</li>
+<li>
+<code>#</code> refers to the <code>id</code> attribute of a specific element (more on this when we get to <a class="local-page" href="#organizing-your-kby-with-sections">sections</a>).
+</li>
+</ul>
+<p>
+Next, as with images, links that start with <code>$/</code> refer to your site&apos;s assets directory (where relevant non-<code>kby</code> files are stored).
+By default, this is a folder called <code>media</code> at the root of your site. These links have the class <code>local-asset</code>.
+</p>
+<p>
+Finally, links that start with anything else are interpreted as links to remote resources, and have the class <code>remote</code>.
+</p>
+</section>
+<section id="organizing-your-kby-with-sections">
+<h2> Organizing Your <code>kby</code> With Sections 🗄️</h2>
+<p>
+At this point, we have all the building blocks to start creating a cozy little blog! However, it would be nice if we could
+give our pages a bit more structure... that is where <strong>sections</strong> come in!
+</p>
+<p>
+Sections are a construct that allow us to group sequences of block elements into named, <em>linkable</em> groups.
+They begin on their own line with a <code>@</code> and then contain a sequence of in-line elements ended by a new line.
+Let&apos;s see an example.
+</p>
+<pre>
+<code>
+#My cooler site 🔥
+
+Hello! Welcome to my slick blog.
+
+@Awesome Section
+Wow, look at how organized I am!
+
+@Awesomer Section
+This really does spark joy.
+
+</code>
+</pre>
+<p>
+<a class="remote" target="_blank"  href="https://konmari.com/about-marie-kondo/">Marie Kondo</a> would be so proud of us right now. If we look at the <code>html</code> generated by this example
+(sans the <code>&lt;head&gt;</code> boilerplate) we can see what sections are doing.
+</p>
+<pre>
+<code>
+&lt;html&gt;
+&lt;body&gt;
+&lt;article id=&quot;my-cooler-site&quot;&gt;
+&lt;h1&gt;My cooler site 🔥&lt;/h1&gt;
+&lt;p&gt;
+Hello! Welcome to my slick blog.
+&lt;/p&gt;
+&lt;section id=&quot;awesome-section&quot;&gt;
+&lt;h2&gt;Awesome Section&lt;/h2&gt;
+&lt;p&gt;
+Wow, look at how organized I am!
+&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;awesomer-section&quot;&gt;
+&lt;h2&gt;Awesomer Section&lt;/h2&gt;
+&lt;p&gt;
+This really does spark joy.
+&lt;/p&gt;
+&lt;/section&gt;
+&lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code>
+</pre>
+<p>
+Several things to note here. Firstly, we can see that each section wraps its contents in <code>&lt;section&gt;</code> tags, that have an <code>id</code> attribute
+consisting of the alphanumeric text of the title minus any styling information, with spaces replaced by <code>-</code>. The <code>id</code> will also
+be all lowercase and strip any leading or trailing whitespace. <strong>If you want to create a link to a specific section of a page, you
+can use this <code>id</code></strong>!
+</p>
+<p>
+You can also see that each section begins with an <code>&lt;h2&gt;</code> tag that contains the text of the section title.
+</p>
+<p>
+The last important thing to notice is where the sections begin and end. Before the first declaration of a section,
+the elements are not in any <code>&lt;section&gt;</code> tags. This area is called the <strong>anonymous section</strong> and is where everything sits by default.
+A page need not have any sections, but once the first section is declared, everything that follows is a part of that section until
+a new section is declared. In other words, <strong>sections are ended by other sections</strong>. It is also worth mentioning that <strong>once you leave
+the anonymous section, there is no way to go back</strong>.
+</p>
+</section>
+<section id="styling-with-css">
+<h2> Styling With <code>css</code> 🎨 </h2>
+<p>
+At this point, we are now able write our site using the glorious <code>kby</code> markup, and have <code>kobayashi</code> spit out a bunch of <code>html</code> files for
+us to display to the world. There is only one problem... we currently have no way to change how our website is displayed, we are stuck
+with the default styling. Lucky for us, <code>kobayashi</code> gives us the option to specify our own custom <code>css</code> stylesheet!
+</p>
+<p>
+For the uninitiated, <code>css</code> is a language used to style <code>html</code> elements. Teaching <code>css</code> is out of the scope of this manual,
+but a great place to get started with <code>css</code> is to read
+<a class="remote" target="_blank"  href="https://developer.mozilla.org/en-US/docs/Web/CSS/Tutorials">Mozilla&apos;s tutorials</a>.
+</p>
+<p>
+By default, <code>kobayashi</code> looks for a file called <code>style.css</code> at the root of our site. As we will see later in the section on
+<a class="local-page" href="#project-configuration-with-toml">project configuration</a>, this can be changed to wherever your heart desires.
+</p>
+<p>
+For the <code>html</code> that corresponds to each <code>kby</code> element, see the previous sections on <a class="local-page" href="#block-elements">block elements</a>,
+<a class="local-page" href="#inline-elements">in-line elements</a> and <a class="local-page" href="#organizing-your-kby-with-sections">sections</a>.
+</p>
+</section>
+<section id="building-a-multipage-website">
+<h2> Building a Multi-Page Website 📑</h2>
+<p>
+So far, we have only seen examples of using <code>kobayashi</code> to build a single <code>kby</code> file. However, <code>kobayashi</code> can build a whole folder
+of <code>kby</code> files in one go! The secret to this is to simply pass the name of the directory that contains all of the files instead of the
+path to a specific file.
+</p>
+<p>
+As we saw earlier, <code>kobayashi</code> will create a folder called <code>build</code> in whatever directory you invoke it from. <code>kobayashi</code> will then
+replicate the directory structure of the source folder in build, replacing files with their <code>html</code> counterparts as we saw in
+the <a class="local-page" href="#hello-kobayashi">&quot;hello, world!&quot; example</a> with one notable exception. Normally, a file called <code>myFile.kby</code> corresponds to
+<code>myFile/index.html</code>, but if the filename is <code>index.kby</code> it will be translated to <code>index.html</code> in its directory with no extra folder.
+This is behavior is a must for navigation or home pages.
+</p>
+</section>
+<section id="project-configuration">
+<h2> Project Configuration 🪛 </h2>
+<p>
+So, we have all the ingredients to build our website with Kobayashi, but what if we don&apos;t like the default options?
+Well, Kobayashi lets you customize several things about your project! The first one being the <strong>build directory</strong>.
+By default, the <code>html</code> files for your site are placed in a folder called <code>build</code>, however you can specify what ever output folder
+you like by passing the <code>-odir</code> option to <code>kobayashi</code> followed by the <strong>relative path</strong> to your output folder. <strong>This path must be
+relative, otherwise <code>kobayashi</code> will ignore it and use the next choice for the build directory</strong>. If the folder does not exist,
+<code>kobayashi</code> will create it for you (including any missing parent directories)!
+</p>
+<p>
+In <code>kobayashi</code>, options are placed before the command (<code>build</code> in most cases). To see an example, let&apos;s say we wanted to 
+the <a class="local-page" href="#hello-world">&quot;hello, world!&quot; example</a> to be built in the folder <code>tmp/hello_world</code>. We would pass this as
+</p>
+<pre>
+<code>
+$ kobayashi -odir tmp/hello_world build hello_world.kby
+
+</code>
+</pre>
+<p>
+<strong>If you every forget an option, simply run <code>kobayashi help</code> and the builder will gladly remind you of everything it can do.</strong>
+</p>
+<p>
+Kobayashi will also let you specify custom paths for the <strong>assets directory</strong> and <strong>stylesheet</strong>. Instead of being passed via the command line,
+this are set in a configuration file using <a class="remote" target="_blank"  href="https://toml.io/en/"><code>toml</code></a>, specifically version 0.5.0 of the specification. If you are
+unfamiliar withe <code>toml</code>, check out the <a class="remote" target="_blank"  href="https://toml.io/en/v0.5.0">offical documentation</a>.
+</p>
+<p>
+By default, <code>kobayashi</code> will look for a file called <code>kobayashi.toml</code> in the current working directory. You can also specify the path to a 
+different file using the <code>-cfg</code> option. A typical configuration file looks like this
+</p>
+<pre>
+<code>
+[project]
+build_dir = &quot;build&quot;
+assets_dir = &quot;/media&quot;
+css_path = &quot;/style.css&quot;
+
+</code>
+</pre>
+<p>
+As you can see, you can also specify the build directory here.
+The main table must be called <strong>project</strong>, and the keys are pretty self-explanatory. As usual, a couple things to note here.
+</p>
+<ul>
+<li>
+<code>build_dir</code> <strong>must</strong> be a relative path.
+</li>
+<li>
+<code>assets_dir</code> and <code>css_path</code> <strong>must</strong> be absolute paths.
+</li>
+</ul>
+<p>
+That second one is a bit of a lie. They must be absolute paths where <code>/</code> represents the build directory of your site.
+As an example, if I want my site&apos;s assets directory to be <code>build/stuff</code> I would set <code>assets_dir</code> to <code>/stuff</code>.
+</p>
+<p>
+<strong>If either of these criteria is not met, <code>kobayashi</code> will ignore that key in the <code>toml</code> file and use the default.</strong> Each time it runs,
+<code>kobayashi</code> will begin by displaying the current configuration information so you can verify everything is correct.
+</p>
+<p>
+The last thing to talk about in terms of configuration is <strong>precedence</strong>. <code>kobayashi</code> will first use any of the options passed to it
+via the command line, then check the configuration file, and lastly fill in with defaults.
+</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion 🎉</h2>
+<p>
+With that, we have reached the end of our journey together. You are now ready to conquer the internet using the Kobayashi content management
+system!
+</p>
+<p>
+If you are looking for a more elaborate example of using Kobayashi to build something, look no further than <a class="remote" target="_blank"  href="https://github.com/alexacallmebaka/alexacallmebaka.github.io">my blog</a>.
+</p>
+<p>
+Found a bug? Please report it by <a class="remote" target="_blank"  href="https://github.com/alexacallmebaka/kobayashi/issues">opening a GitHub issue</a>.
+</p>
+<p>
+Happy building! 🍻
+</p>
+</section>
+</article>
+</body>
+</html>

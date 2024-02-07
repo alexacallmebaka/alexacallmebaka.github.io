@@ -1,7 +1,8 @@
 #The Kobayashi User Manual 🐲
 
-Hello, and welcome the user manual for the Kobayashi content management system! Named after [my favorite two-dimensional programmer|https://en.wikipedia.org/wiki/Miss_Kobayashi%27s_Dragon_Maid],
-Kobayashi is designed for the
+Hello, and welcome the user manual for the Kobayashi content management system! Named 
+after [my favorite two-dimensional programmer|https://en.wikipedia.org/wiki/Miss_Kobayashi%27s_Dragon_Maid]
+and written in Haskell, Kobayashi is designed for the
 creation of simple static websites (like this one!) and consists of the `kby` markup format which the 
 `kobayashi` static website builder translates to `html` files for you to display on the World Wide Web!
 
