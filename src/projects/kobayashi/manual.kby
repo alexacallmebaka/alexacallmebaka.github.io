@@ -1,6 +1,6 @@
 #The Kobayashi User Manual 🐲
 
-Hello, and welcome the user manual for the Kobayashi content management system! Named 
+Hello, and welcome the user manual for the Kobayashi static website builder! Named 
 after [my favorite two-dimensional programmer|https://en.wikipedia.org/wiki/Miss_Kobayashi%27s_Dragon_Maid]
 and written in Haskell, Kobayashi is designed for the
 creation of simple static websites (like this one!) and consists of the `kby` markup format which the 
@@ -456,8 +456,7 @@ The last thing to talk about in terms of configuration is *precedence*. `kobayas
 via the command line, then check the configuration file, and lastly fill in with defaults.
 
 @Conclusion 🎉
-With that, we have reached the end of our journey together. You are now ready to conquer the internet using the Kobayashi content management
-system!
+With that, we have reached the end of our journey together. You are now ready to conquer the internet using Kobayashi!
 
 If you are looking for a more elaborate example of using Kobayashi to build something, look no further than [my blog|https://github.com/alexacallmebaka/alexacallmebaka.github.io].
 
