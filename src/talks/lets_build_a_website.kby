@@ -1,3 +1,15 @@
-# Let's Build a Website 💃
+# Let's Build a Website! 💃
 
-Everything from my HackKU24 Beginner's workshop. Coming soon!
+I gave this talk as the third installment of our Beginner
+'s Series for HackKU24. 
+In it, I teach HTML, CSS, and Flask 
+to an audience of beginner programmers. Building on a Figma 
+prototype from the previous HackKU Beginner's workshop, I walk hackers through 
+creating a simple sign-in page that displays who has signed-in 
+so far after a user fills in a form.
+
+- Watch the [workshop recording|https://www.youtube.com/watch?v=DPRLKIZk840]!
+- Read through all of the [source code examples.|https://github.com/alexacallmebaka/lets_build_a_website/tree/master] 
+- Check out the [slide deck|$/slides/lets_build_a_website_deck.pdf].
+
+<$/photography/caldera.jpeg>
