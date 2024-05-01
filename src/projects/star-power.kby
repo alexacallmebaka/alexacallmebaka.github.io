@@ -1,0 +1,29 @@
+# Path Finding Star Power 🤩
+
+Recently, I had the pleasure of taking a course in Graph Theory from the lovely [Professor Reuven Hodges|https://rhodges-math.github.io/]
+at the University of Kansas. As a capstone of the course, I was tasked with an independent project that involved the following:
+
+- Reading an academic paper.
+- Writing a short summary of said paper.
+- Implementing an algorithm from the paper.
+- Giving a short talk in-class over the paper.
+
+For my project, I used it as an excuse to finally get acquainted with the A\* algorithm. A\* is a heuristic algorithm
+for finding the minimum cost path between two vertices in a directed, weighted graph. Therefore, the paper I chose was
+["A Formal Basis for the Heuristic Determination of Minimum Cost Paths"|https://doi.org/10.1109/TSSC.1968.300136]
+by Hart, Nilsson, and Raphel which is the original paper that proposed and proved A\*.
+
+If you are interested:
+
+- Read my [report|$/reports/a_star.pdf].
+- Check out my [implementation|https://github.com/alexacallmebaka/star-power].
+- Flick through the [slide deck|$/slides/a_star_talk_deck.pdf] from my talk.
+
+My implementation of A\* is also capable of of producing animations of the algorithm being run /as/ it finds the shortest path
+using 3Blue1Brown's [Manim|https://www.manim.community/] library. For my talk, I rendered a [basic example|https://youtu.be/DK7QzVtlvz0] 
+using the cycle of six vertices with random weights and heuristic values as well as a [more complex example|https://youtu.be/wjk-TryQzgs].
+For the latter, I am modeling a road trip from Lawrence, KS to Bartlesville, OK constrained to only use specific highways.
+The edge weights use the driving distance between cities on [Google Maps|https://www.google.com/maps], and the heuristics 
+were calculated by measuring the distance between cities in miles using [Google Earth Pro|https://www.google.com/earth/about/versions/].
+
+<$/photography/karaoke.jpeg>
