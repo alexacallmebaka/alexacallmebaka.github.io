@@ -70,6 +70,11 @@ img {
   border-color: hsl(0, 0%, 75%);
 }
 
+/*image captions.*/
+img + p {
+  text-align: center;
+}
+
 code {
   overflow-wrap: break-word;
   padding: 0.3em;

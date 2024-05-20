@@ -1,0 +1,6 @@
+[project]
+navbar = [ { name = "Home 🏰", src = "/" }
+         , { name = "Photos 📸", src = "/photos" }
+         , { name = "Projects 🛠️", src = "/projects" }
+         , { name = "Links 🌱", src = "/where" }
+         ]
