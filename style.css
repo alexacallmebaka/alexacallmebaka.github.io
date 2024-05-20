@@ -32,12 +32,8 @@ strong {
   color: hsl(186, 82%, 71%);
 }
 
-a:link {
+a:link, a:visited {
   color: hsl(318, 91%, 72%);
-}
-
-a:visited {
-  color: hsl(318, 91%, 62%);
 }
 
 a:hover {
@@ -142,14 +138,22 @@ nav {
 nav ul {
   display: inline-block;
   padding: 0.3rem;
-  background-color: hsl(61, 86%, 62%);
+
+  border-color: hsl(185, 82%, 71%);
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 3px;
 
 }
 
 nav li {
   display: inline-block;
   margin: 0.3rem;
-  background-color: hsl(61, 86%, 62%);
+}
+
+nav li + li::before{
+  color: hsl(185, 82%, 71%);
+  content: "|";
 }
 
 /*clear custom bullet*/
@@ -157,8 +161,12 @@ nav li::before {
   content: "";
 }
 
-nav a {
+nav a, nav a:visited {
   text-align: center;
+  text-decoration: none;
+  color: hsl(0,0%, 100%);
 }
 
-
+nav a:hover {
+  text-decoration: underline;
+}
