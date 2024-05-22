@@ -166,7 +166,7 @@ nav li::before {
   content: "";
 }
 
-nav a, nav a:visited {
+nav a:link, nav a:visited {
   text-align: center;
   text-decoration: none;
   color: hsl(0,0%, 100%);
