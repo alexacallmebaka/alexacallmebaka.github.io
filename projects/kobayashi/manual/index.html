@@ -60,6 +60,9 @@ All the examples used in the manual can be found on <a class="remote" target="_b
 <a class="local-page" href="#project-configuration">Project Configuration</a>
 </li>
 <li>
+<a class="local-page" href="#adding-a-navigation-bar">Adding a Navigation Bar</a>
+</li>
+<li>
 <a class="local-page" href="#conclusion">Conclusion</a>
 </li>
 </ul>
@@ -640,6 +643,7 @@ different file using the <code>-cfg</code> option. A typical configuration file 
 build_dir = &quot;build&quot;
 assets_dir = &quot;/media&quot;
 css_path = &quot;/style.css&quot;
+favicon_path = &quot;/favicon.ico&quot;
 
 </code>
 </pre>
@@ -652,7 +656,7 @@ The main table must be called <strong>project</strong>, and the keys are pretty 
 <code>build_dir</code> <strong>must</strong> be a relative path.
 </li>
 <li>
-<code>assets_dir</code> and <code>css_path</code> <strong>must</strong> be absolute paths.
+<code>assets_dir</code>, <code>css_path</code>, and <code>favicon_path</code> <strong>must</strong> be absolute paths.
 </li>
 </ul>
 <p>
@@ -666,6 +670,32 @@ As an example, if I want my site&apos;s assets directory to be <code>build/stuff
 <p>
 The last thing to talk about in terms of configuration is <strong>precedence</strong>. <code>kobayashi</code> will first use any of the options passed to it
 via the command line, then check the configuration file, and lastly fill in with defaults.
+</p>
+</section>
+<section id="adding-a-navigation-bar">
+<h2>Adding a Navigation Bar 🧭</h2>
+<p>
+An important piece of many websites is having a navigation bar (navbar) on top. In Kobayashi, navbars are optional and will appear below the title of the page.
+The contents of the navbar are specified within the <code>[project]</code> table in the <code>toml</code> configuration file as a list of tables with the <code>navbar</code> key.
+An example is as follows,
+</p>
+<pre>
+<code>
+[project]
+navbar = [ { name = &quot;home 🏠&quot;, src = &quot;/&quot; }
+         , { name = &quot;my cool music 🎷&quot;, src = &quot;/music&quot; }
+         ]
+
+</code>
+</pre>
+<p>
+Each table has two keys, the first being <code>name</code>, which is what text is displayed in the navbar for that link. This can be any valid sequence 
+of <a class="local-page" href="#inline-elements">in-line elements</a>. The second is <code>src</code>, which is the URL the link will take the user to when clicked.
+This can be any URL valid within a <code>kby</code> link.
+</p>
+<p>
+In terms of <code>html</code>, the contents of the navbar is a set of <code>&lt;ul&gt;</code> tags where each <code>&lt;li&gt;</code> contains an <code>&lt;a&gt;</code> corresponding to a link
+in the navbar. The whole <code>&lt;ul&gt;</code> is  wrapped in <code>&lt;nav&gt;</code> tags for accessibility and ease of styling.
 </p>
 </section>
 <section id="conclusion">
