@@ -19,6 +19,7 @@ All the examples used in the manual can be found on [GitHub|https://github.com/a
 - [Styling With `css`|#styling-with-css]
 - [Building a Multi-Page Website|#building-a-multipage-website]
 - [Project Configuration|#project-configuration]
+- [Adding a Navigation Bar|#adding-a-navigation-bar]
 - [Conclusion|#conclusion]
 
 
@@ -438,13 +439,14 @@ different file using the `-cfg` option. A typical configuration file looks like 
 build_dir = "build"
 assets_dir = "/media"
 css_path = "/style.css"
+favicon_path = "/favicon.ico"
 ```
 
 As you can see, you can also specify the build directory here.
 The main table must be called *project*, and the keys are pretty self-explanatory. As usual, a couple things to note here.
 
 - `build_dir` *must* be a relative path.
-- `assets_dir` and `css_path` *must* be absolute paths.
+- `assets_dir`, `css_path`, and `favicon_path` *must* be absolute paths.
 
 That second one is a bit of a lie. They must be absolute paths where `/` represents the build directory of your site.
 As an example, if I want my site's assets directory to be `build/stuff` I would set `assets_dir` to `/stuff`.
@@ -454,6 +456,25 @@ As an example, if I want my site's assets directory to be `build/stuff` I would 
 
 The last thing to talk about in terms of configuration is *precedence*. `kobayashi` will first use any of the options passed to it
 via the command line, then check the configuration file, and lastly fill in with defaults.
+
+@Adding a Navigation Bar 🧭
+An important piece of many websites is having a navigation bar (navbar) on top. In Kobayashi, navbars are optional and will appear below the title of the page.
+The contents of the navbar are specified within the `[project]` table in the `toml` configuration file as a list of tables with the `navbar` key.
+An example is as follows,
+
+```
+[project]
+navbar = [ { name = "home 🏠", src = "/" }
+         , { name = "my cool music 🎷", src = "/music" }
+         ]
+```
+
+Each table has two keys, the first being `name`, which is what text is displayed in the navbar for that link. This can be any valid sequence 
+of [in-line elements|#inline-elements]. The second is `src`, which is the URL the link will take the user to when clicked.
+This can be any URL valid within a `kby` link.
+
+In terms of `html`, the contents of the navbar is a set of `<ul>` tags where each `<li>` contains an `<a>` corresponding to a link
+in the navbar. The whole `<ul>` is  wrapped in `<nav>` tags for accessibility and ease of styling.
 
 @Conclusion 🎉
 With that, we have reached the end of our journey together. You are now ready to conquer the internet using Kobayashi!
