@@ -1,4 +1,5 @@
 [project]
+base_url = "https://jameshurd.net"
 navbar = [ { name = "Home 🏰", src = "/" }
          , { name = "Photos 📸", src = "/photos" }
          , { name = "Projects 🛠️", src = "/projects" }
