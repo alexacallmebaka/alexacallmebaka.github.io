@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <!--Made with ❤️ using Kobayashi: https://github.com/alexacallmebaka/kobayashi-->
+<html>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,7 +25,6 @@
 <meta name="twitter:image" content="https://jameshurd.net/media/previews/kobayashi_manual.png" />
 
 </head>
-<html>
 <body>
 <article id="the-kobayashi-user-manual">
 <h1>The Kobayashi User Manual 🐲</h1>
@@ -79,6 +79,9 @@ All the examples used in the manual can be found on <a class="remote" target="_b
 <a class="local-page" href="#adding-a-navigation-bar">Adding a Navigation Bar</a>
 </li>
 <li>
+<a class="local-page" href="#preview-generation">Preview Generation</a>
+</li>
+<li>
 <a class="local-page" href="#conclusion">Conclusion</a>
 </li>
 </ul>
@@ -125,7 +128,7 @@ Check out my cool page. 😎
 </code>
 </pre>
 <p>
-After that, run <code>kobayashi build hello_world.kby</code> and watch the magic happen! You&apos;ll notice, <code>kobayashi</code>
+After that, run <code>kobayashi -burl &quot;https://mysite.com&quot; build hello_world.kby</code> and watch the magic happen! You&apos;ll notice, <code>kobayashi</code>
 has a lot to say about our simple little file
 </p>
 <pre>
@@ -138,6 +141,9 @@ kobayashi.toml not found!
 Build Directory: &quot;build/&quot;
 Assets Directory: &quot;/media/&quot;
 Path to CSS: &quot;/style.css&quot;
+Path to Favicon: &quot;/favicon.ico&quot;
+Navbar: No
+Base URL: &quot;https://mysite.com&quot;
 
 Starting build of hello_world.kby
 Building hello_world.kby...
@@ -155,6 +161,9 @@ most of this we can ignore for now, but notice two things:
 </li>
 <li>
 The build directory is <code>build/</code>.
+</li>
+<li>
+<code>-burl</code> is the base URL of our site. <code>kobayashi</code> will use this when creating absolute links to things on our site, such as in <a class="local-page" href="#preview-generation">preview generation</a>.
 </li>
 </ul>
 <p>
@@ -181,7 +190,7 @@ build/
 you&apos;ll see that a folder with the name of the original <code>kby</code> file was made, and inside sits a file called
 <code>index.html</code> which contains the <code>html</code> that was generated. Kobayashi organizes things this way so you can
 link a specific page on your site by using just the filenames and not having the fumble around with
-remembering extensions. For example, we could link to our &quot;hello, world!&quot; page with <code>https://mysite/hello_world</code>.
+remembering extensions. For example, we could link to our &quot;hello, world!&quot; page with <code>https://mysite.com/hello_world</code>.
 </p>
 <p>
 Finally, let&apos;s look at the contents of <code>index.html</code>
@@ -192,13 +201,26 @@ $ cat build/hello_world/index.html
 
 &lt;!DOCTYPE HTML&gt;
 &lt;!--Made with ❤️ using Kobayashi: https://github.com/alexacallmebaka/kobayashi--&gt;
+&lt;html&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;UTF-8&quot; /&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot; /&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;/style.css&quot; /&gt;
+&lt;link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;/favicon.ico&quot; /&gt;
+&lt;link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;/favicon.ico&quot; /&gt;
+
+&lt;!-- HTML Metadata ⚙️--&gt;
 &lt;title&gt;Hello, world!&lt;/title&gt;
+
+&lt;!-- Open Graph Metadata 📊--&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;Hello, world!&quot; /&gt;
+&lt;meta property=&quot;og:type&quot; content=&quot;website&quot; /&gt;
+
+&lt;!-- Twitter Metadata 🕊️--&gt;
+&lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot; /&gt;
+&lt;meta name=&quot;twitter:title&quot; content=&quot;Hello, world!&quot; /&gt;
+
 &lt;/head&gt;
-&lt;html&gt;
 &lt;body&gt;
 &lt;article id=&quot;hello-world&quot;&gt;
 &lt;h1&gt;Hello, world!&lt;/h1&gt;
@@ -660,6 +682,7 @@ build_dir = &quot;build&quot;
 assets_dir = &quot;/media&quot;
 css_path = &quot;/style.css&quot;
 favicon_path = &quot;/favicon.ico&quot;
+base_url = &quot;https://jameshurd.net&quot;
 
 </code>
 </pre>
@@ -712,6 +735,35 @@ This can be any URL valid within a <code>kby</code> link.
 <p>
 In terms of <code>html</code>, the contents of the navbar is a set of <code>&lt;ul&gt;</code> tags where each <code>&lt;li&gt;</code> contains an <code>&lt;a&gt;</code> corresponding to a link
 in the navbar. The whole <code>&lt;ul&gt;</code> is  wrapped in <code>&lt;nav&gt;</code> tags for accessibility and ease of styling.
+</p>
+</section>
+<section id="preview-generation">
+<h2>Preview Generation 🏭</h2>
+<p>
+Kobayashi has the capability to add metadata to your page that various websites can use to generate
+previews of your site when it is linked on social media sites and in messages using the 
+<a class="remote" target="_blank"  href="https://opengraph.dev/">OpenGraph specification</a> as well as 
+<a class="remote" target="_blank"  href="https://developer.x.com/en/docs/twitter-for-websites/cards/overview/abouts-cards">Twitter&apos;s Card specification</a>. For
+both of these, we have the option of adding a description and preview image. An example of how we might specify these is
+as follows.
+</p>
+<pre>
+<code>
+# The Kobayashi User Manual 🐲
+# IMAGE: $/previews/kobayashi_manual.png
+# DESC: Conquer the web with Kobayashi, the internet&apos;s most draconic static site builder! 🐉
+
+</code>
+</pre>
+<p>
+First, the <code># IMAGE:</code> directive must follow <strong>immediately</strong> after the title declaration, and point to a valid
+URL (anything that is valid in a link is valid here). Kobayashi with use the supplied base URL (see the
+<a class="local-page" href="#hello-kobayashi">hello, kobayshi! example</a> for more details on this) to make this an absolute link as per the
+requirements of the OpenGraph spec.
+</p>
+<p>
+<strong>Right after</strong> the <code>#IMAGE:</code> directive, you may use the <code>#DESC:</code> directive to specify a short description of your
+site. This is interpreted as raw text, can be multiple lines,  and is ended by (you probably guessed it) two newlines!
 </p>
 </section>
 <section id="conclusion">
