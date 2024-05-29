@@ -22,6 +22,7 @@ All the examples used in the manual can be found on [GitHub|https://github.com/a
 - [Building a Multi-Page Website|#building-a-multipage-website]
 - [Project Configuration|#project-configuration]
 - [Adding a Navigation Bar|#adding-a-navigation-bar]
+- [Preview Generation|#preview-generation]
 - [Conclusion|#conclusion]
 
 
@@ -57,7 +58,7 @@ As a very simple example, let us create the classic "hello, world!" example. In 
 Check out my cool page. 😎
 ```
 
-After that, run `kobayashi build hello_world.kby` and watch the magic happen! You'll notice, `kobayashi`
+After that, run `kobayashi -burl "https://mysite.com" build hello_world.kby` and watch the magic happen! You'll notice, `kobayashi`
 has a lot to say about our simple little file
 
 ```
@@ -69,6 +70,9 @@ kobayashi.toml not found!
 Build Directory: "build/"
 Assets Directory: "/media/"
 Path to CSS: "/style.css"
+Path to Favicon: "/favicon.ico"
+Navbar: No
+Base URL: "https://mysite.com"
 
 Starting build of hello_world.kby
 Building hello_world.kby...
@@ -80,6 +84,7 @@ most of this we can ignore for now, but notice two things:
 
   - `kobyashi` logs to the terminal which files it builds.
   - The build directory is `build/`.
+  - `-burl` is the base URL of our site. `kobayashi` will use this when creating absolute links to things on our site, such as in [preview generation|#preview-generation].
 
 `kobayashi` will output the `html` files for your site in a separate folder called the *build directory*.
 This folder is created if it doesn't exist, and by default is just `build` in the current working
@@ -100,7 +105,7 @@ build/
 you'll see that a folder with the name of the original `kby` file was made, and inside sits a file called
 `index.html` which contains the `html` that was generated. Kobayashi organizes things this way so you can
 link a specific page on your site by using just the filenames and not having the fumble around with
-remembering extensions. For example, we could link to our "hello, world!" page with `https://mysite/hello_world`.
+remembering extensions. For example, we could link to our "hello, world!" page with `https://mysite.com/hello_world`.
 
 Finally, let's look at the contents of `index.html`
 
@@ -109,13 +114,26 @@ $ cat build/hello_world/index.html
 
 <!DOCTYPE HTML>
 <!--Made with ❤️ using Kobayashi: https://github.com/alexacallmebaka/kobayashi-->
+<html>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="stylesheet" href="/style.css" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+
+<!-- HTML Metadata ⚙️-->
 <title>Hello, world!</title>
+
+<!-- Open Graph Metadata 📊-->
+<meta property="og:title" content="Hello, world!" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter Metadata 🕊️-->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hello, world!" />
+
 </head>
-<html>
 <body>
 <article id="hello-world">
 <h1>Hello, world!</h1>
@@ -442,6 +460,7 @@ build_dir = "build"
 assets_dir = "/media"
 css_path = "/style.css"
 favicon_path = "/favicon.ico"
+base_url = "https://jameshurd.net"
 ```
 
 As you can see, you can also specify the build directory here.
@@ -459,7 +478,7 @@ As an example, if I want my site's assets directory to be `build/stuff` I would 
 The last thing to talk about in terms of configuration is *precedence*. `kobayashi` will first use any of the options passed to it
 via the command line, then check the configuration file, and lastly fill in with defaults.
 
-@Adding a Navigation Bar 🧭
+@ Adding a Navigation Bar 🧭
 An important piece of many websites is having a navigation bar (navbar) on top. In Kobayashi, navbars are optional and will appear below the title of the page.
 The contents of the navbar are specified within the `[project]` table in the `toml` configuration file as a list of tables with the `navbar` key.
 An example is as follows,
@@ -478,7 +497,29 @@ This can be any URL valid within a `kby` link.
 In terms of `html`, the contents of the navbar is a set of `<ul>` tags where each `<li>` contains an `<a>` corresponding to a link
 in the navbar. The whole `<ul>` is  wrapped in `<nav>` tags for accessibility and ease of styling.
 
-@Conclusion 🎉
+@ Preview Generation 🏭
+Kobayashi has the capability to add metadata to your page that various websites can use to generate
+previews of your site when it is linked on social media sites and in messages using the 
+[OpenGraph specification|https://opengraph.dev/] as well as 
+[Twitter's Card specification|https://developer.x.com/en/docs/twitter-for-websites/cards/overview/abouts-cards]. For
+both of these, we have the option of adding a description and preview image. An example of how we might specify these is
+as follows.
+
+```
+# The Kobayashi User Manual 🐲
+# IMAGE: $/previews/kobayashi_manual.png
+# DESC: Conquer the web with Kobayashi, the internet's most draconic static site builder! 🐉
+```
+
+First, the `# IMAGE:` directive must follow *immediately* after the title declaration, and point to a valid
+URL (anything that is valid in a link is valid here). Kobayashi with use the supplied base URL (see the
+[hello, kobayshi! example|#hello-kobayashi] for more details on this) to make this an absolute link as per the
+requirements of the OpenGraph spec.
+
+*Right after* the `#IMAGE:` directive, you may use the `#DESC:` directive to specify a short description of your
+site. This is interpreted as raw text, can be multiple lines,  and is ended by (you probably guessed it) two newlines!
+
+@ Conclusion 🎉
 With that, we have reached the end of our journey together. You are now ready to conquer the internet using Kobayashi!
 
 If you are looking for a more elaborate example of using Kobayashi to build something, look no further than [my blog|https://github.com/alexacallmebaka/alexacallmebaka.github.io].
