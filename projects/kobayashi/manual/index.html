@@ -9,14 +9,19 @@
 
 <!-- HTML Metadata ⚙️-->
 <title>The Kobayashi User Manual 🐲</title>
+<meta name="description" content="Conquer the web with Kobayashi, the internet's most draconic static site builder! 🐉" />
 
 <!-- Open Graph Metadata 📊-->
 <meta property="og:title" content="The Kobayashi User Manual 🐲" />
+<meta property="og:description" content="Conquer the web with Kobayashi, the internet's most draconic static site builder! 🐉" />
 <meta property="og:type" content="website" />
+<meta property="og:image" content="https://jameshurd.net/media/previews/kobayashi_manual.png" />
 
 <!-- Twitter Metadata 🕊️-->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="The Kobayashi User Manual 🐲" />
+<meta name="twitter:description" content="Conquer the web with Kobayashi, the internet's most draconic static site builder! 🐉" />
+<meta name="twitter:image" content="https://jameshurd.net/media/previews/kobayashi_manual.png" />
 
 </head>
 <html>
@@ -41,7 +46,7 @@ creation of simple static websites (like this one!) and consists of the <code>kb
 All the examples used in the manual can be found on <a class="remote" target="_blank"  href="https://github.com/alexacallmebaka/kobayashi/tree/master/examples">GitHub</a>.
 </p>
 <section id="table-of-contents">
-<h2> Table of Contents 📚</h2>
+<h2>Table of Contents 📚</h2>
 <ul>
 <li>
 <a class="local-page" href="#getting-kobayashi">Getting Kobayashi</a> 
@@ -279,7 +284,7 @@ These also will have their <a class="local-page" href="#inline-elements">own sec
 </p>
 </section>
 <section id="block-elements">
-<h2> Block Elements 🧱</h2>
+<h2>Block Elements 🧱</h2>
 <p>
 The first and most basic of the block elements is the <strong>paragraph</strong>. The paragraph is simply defined as a sequence of in-line
 elements and plain text ended by two newlines. Making a paragraph is easy, just type out the words! The body of our page
@@ -425,7 +430,7 @@ do (or the end of the file).
 </p>
 </section>
 <section id="inline-elements">
-<h2> In-Line Elements 🚢</h2>
+<h2>In-Line Elements 🚢</h2>
 <p>
 Another fundamental building block of <code>kby</code> markup is the in-line element! These elements, as you probably guessed, occur on the same
 line within <a class="local-page" href="#block-elements">block elements</a>. Mainly, they are used for different styles of text. Specifically,
@@ -508,7 +513,7 @@ Finally, links that start with anything else are interpreted as links to remote 
 </p>
 </section>
 <section id="organizing-your-kby-with-sections">
-<h2> Organizing Your <code>kby</code> With Sections 🗄️</h2>
+<h2>Organizing Your <code>kby</code> With Sections 🗄️</h2>
 <p>
 At this point, we have all the building blocks to start creating a cozy little blog! However, it would be nice if we could
 give our pages a bit more structure... that is where <strong>sections</strong> come in!
@@ -581,7 +586,7 @@ the anonymous section, there is no way to go back</strong>.
 </p>
 </section>
 <section id="styling-with-css">
-<h2> Styling With <code>css</code> 🎨 </h2>
+<h2>Styling With <code>css</code> 🎨 </h2>
 <p>
 At this point, we are now able write our site using the glorious <code>kby</code> markup, and have <code>kobayashi</code> spit out a bunch of <code>html</code> files for
 us to display to the world. There is only one problem... we currently have no way to change how our website is displayed, we are stuck
@@ -602,7 +607,7 @@ For the <code>html</code> that corresponds to each <code>kby</code> element, see
 </p>
 </section>
 <section id="building-a-multipage-website">
-<h2> Building a Multi-Page Website 📑</h2>
+<h2>Building a Multi-Page Website 📑</h2>
 <p>
 So far, we have only seen examples of using <code>kobayashi</code> to build a single <code>kby</code> file. However, <code>kobayashi</code> can build a whole folder
 of <code>kby</code> files in one go! The secret to this is to simply pass the name of the directory that contains all of the files instead of the
@@ -617,7 +622,7 @@ This is behavior is a must for navigation or home pages.
 </p>
 </section>
 <section id="project-configuration">
-<h2> Project Configuration 🪛 </h2>
+<h2>Project Configuration 🪛 </h2>
 <p>
 So, we have all the ingredients to build our website with Kobayashi, but what if we don&apos;t like the default options?
 Well, Kobayashi lets you customize several things about your project! The first one being the <strong>build directory</strong>.
