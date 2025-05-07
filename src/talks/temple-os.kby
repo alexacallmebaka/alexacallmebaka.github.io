@@ -1,0 +1,13 @@
+# TempleOS: An Operating System From the Heavens 🙏
+# IMAGE: $/previews/temple-os.png
+# DESC: The sory of God's lonely programmer ✝️
+
+For my final ACM@KU student spotlight, I felt it appropriate to "run it back" as the kids say and give the same talk I
+did for my first spotlight: a tour of TempleOS. TempleOS is the creation [Terry Davis|https://en.wikipedia.org/wiki/Terry_A._Davis],
+and is his interpretation of what he believed to be a message from God after a manic episode. The message was simple, build a temple to the lord in the form of an operating system. In this talk I covered the history of one pious man's livelihood, as well as gave a live
+demo of the software in action!
+
+- Check out the [slide deck|$/slides/temple_os_deck.pdf].
+- Download and play with [TempleOS|https://templeos.org/]
+
+<$/photography/dead_end.jpeg>
