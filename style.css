@@ -11,20 +11,20 @@ html {
   background-color: hsl(217, 61%, 10%); 
   font-family: Verdana, sans-serif;
   color: hsl(0, 0%, 100%);
-  max-width: 700px;
+  max-width: 750px;
   margin: auto;
 }
 
 
 h1, h2 {
   text-align: center;
-  color: hsl(61, 86%, 62%);
+  color: white;
 }
 
 h1 {
   text-align: center;
   text-decoration: underline;
-  text-decoration-color: hsl(186, 82%, 71%);
+  text-decoration-color: hsl(318, 91%, 72%);
   text-decoration-thickness: 0.3rem;
 }
 
@@ -137,28 +137,28 @@ pre code {
 
 nav {
   margin: auto;
+  width: fit-content;
   text-align: center;
 }
 
 nav ul {
-  display: inline-block;
-  padding: 0.3rem;
-
-  border-color: hsl(185, 82%, 71%);
-  border-style: solid;
+  padding: 0rem;
+  border: 3px solid hsl(318, 81%, 72%);
   border-radius: 10px;
-  border-width: 3px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
 
 }
 
 nav li {
-  display: inline-block;
-  margin: 0.2rem;
+  padding: 0.1rem 0.35rem;
+  margin: 0.5rem 0;
+  text-align: center;
 }
 
-nav li + li::before{
-  color: hsl(185, 82%, 71%);
-  content: "|";
+nav li:not(:last-child) {
+  border-right: 3px solid hsl(318, 81%, 72%);
 }
 
 /*clear custom bullet*/
@@ -174,4 +174,47 @@ nav a:link, nav a:visited {
 
 nav a:hover {
   text-decoration: underline;
+
+}
+
+.directory {
+  text-align: center;
+  width: fit-content;
+  margin:auto;
+  border-radius: 10px;
+  border: 3px solid hsl(318, 81%, 62%);
+  overflow: hidden;
+}
+
+.directory ul {
+  list-style: none;
+  margin: 0; 
+  padding: 0rem;
+}
+
+.directory li:hover {
+  background-color: hsl(318, 76%, 62%);
+}
+
+.directory li {
+  background-color: hsl(318, 91%, 72%);
+  display: flex;
+  justify-content: center;
+}
+
+.directory li:not(:last-child) {
+  border-bottom: 2px solid hsl(318, 76%, 62%);
+}
+
+.directory li a {
+  margin: 0;
+  padding: 0.75rem 5rem;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+
+/*clear custom bullet*/
+.directory li::before {
+  content: "";
 }
